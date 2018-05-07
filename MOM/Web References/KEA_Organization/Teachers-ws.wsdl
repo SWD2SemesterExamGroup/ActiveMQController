@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://organization.kea.dk/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="Teachers-ws" targetNamespace="http://organization.kea.dk/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://localhost:8080/KeaOrganizationSOAP/Teachers-ws?xsd=1" namespace="http://organization.kea.dk/" />
+    </xsd:schema>
+  </types>
+  <message name="getCourseClassesString">
+    <part name="parameters" element="tns:getCourseClassesString" />
+  </message>
+  <message name="getCourseClassesStringResponse">
+    <part name="parameters" element="tns:getCourseClassesStringResponse" />
+  </message>
+  <message name="CourseClassesDataBy">
+    <part name="parameters" element="tns:CourseClassesDataBy" />
+  </message>
+  <message name="CourseClassesDataByResponse">
+    <part name="parameters" element="tns:CourseClassesDataByResponse" />
+  </message>
+  <portType name="TeacherService">
+    <operation name="getCourseClassesString">
+      <input wsam:Action="http://organization.kea.dk/TeacherService/getCourseClassesStringRequest" message="tns:getCourseClassesString" />
+      <output wsam:Action="http://organization.kea.dk/TeacherService/getCourseClassesStringResponse" message="tns:getCourseClassesStringResponse" />
+    </operation>
+    <operation name="CourseClassesDataBy">
+      <input wsam:Action="http://organization.kea.dk/TeacherService/CourseClassesDataByRequest" message="tns:CourseClassesDataBy" />
+      <output wsam:Action="http://organization.kea.dk/TeacherService/CourseClassesDataByResponse" message="tns:CourseClassesDataByResponse" />
+    </operation>
+  </portType>
+  <binding name="TeacherServicePortBinding" type="tns:TeacherService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="getCourseClassesString">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CourseClassesDataBy">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Teachers-ws">
+    <port name="TeacherServicePort" binding="tns:TeacherServicePortBinding">
+      <soap:address location="http://localhost:8080/KeaOrganizationSOAP/Teachers-ws" />
+    </port>
+  </service>
+</definitions>

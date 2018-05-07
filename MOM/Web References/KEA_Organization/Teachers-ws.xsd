@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://organization.kea.dk/" targetNamespace="http://organization.kea.dk/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CourseClassesDataBy" type="tns:CourseClassesDataBy" />
+  <xs:element name="CourseClassesDataByResponse" type="tns:CourseClassesDataByResponse" />
+  <xs:element name="baseCModel" type="tns:baseCModel" />
+  <xs:element name="getCourseClassesString" type="tns:getCourseClassesString" />
+  <xs:element name="getCourseClassesStringResponse" type="tns:getCourseClassesStringResponse" />
+  <xs:element name="teacherEntityView" type="tns:teacherEntityView" />
+  <xs:complexType name="CourseClassesDataBy">
+    <xs:sequence>
+      <xs:element name="teacherID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CourseClassesDataByResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:teacherEntityView" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="teacherEntityView">
+    <xs:sequence>
+      <xs:element name="teacherID" type="xs:int" />
+      <xs:element minOccurs="0" name="teacherName" type="xs:string" />
+      <xs:element minOccurs="0" name="courses">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="courses" nillable="true" type="tns:baseCModel" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="baseCModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="courseClass" type="tns:baseCModel" />
+      <xs:element name="ID" type="xs:long" />
+      <xs:element minOccurs="0" name="title" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCourseClassesString">
+    <xs:sequence>
+      <xs:element name="teacherID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getCourseClassesStringResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
