@@ -46,7 +46,7 @@
 
         public void start(string text)
         {
-            using (IConnection connection = factory.CreateConnection())
+            using (IConnection connection = factory.CreateConnection(Configuration.USER, Configuration.PASSWORD))
             using (ISession session = connection.CreateSession())
             {
                 destination = SessionUtil.GetDestination(session, PATH_QUEUE);

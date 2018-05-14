@@ -67,6 +67,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SandBox\CoursePasswordTasks.cs" />
     <Compile Include="Web References\KEA_Organization\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

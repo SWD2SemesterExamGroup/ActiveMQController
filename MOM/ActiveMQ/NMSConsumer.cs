@@ -8,16 +8,73 @@
     using System.Diagnostics;
     using MOM.ActiveMQ.Teacher;
     using Newtonsoft.Json;
+    using System.Threading;
 
     // Could become TeacherConsumer
     public class NMSConsumer : Configuration
     {
         private IDestination destination;
         private const String PATH_QUEUE = "queue://jsa-queue";
+        private IDestination destinationCourse;
+        private const String PATH_TOPIC_COURSE_ATTENDANCE = "queue://course-keys";
+        
+        public void startReceivers()
+        {
+            Thread teacherThread1 = new Thread(new ThreadStart(new NMSConsumer().start));
+            Thread teacherThread2 = new Thread(new ThreadStart(new NMSConsumer().courseAttendance));
+            //courseAttendance();
+
+            teacherThread1.Start();
+            teacherThread2.Start();
+
+            Console.WriteLine("--------------------------------");
+            Console.WriteLine("-------------MOM----------------");
+            Console.WriteLine("  Mom's Friendly Robot Company  ");
+            Console.WriteLine("-------------MOM----------------");
+            Console.WriteLine("--------------------------------");
+
+        }
+
+        public void courseAttendance()
+        {
+            using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
+            using (ISession session = connection.CreateSession())
+            {
+                destinationCourse = SessionUtil.GetDestination(session, PATH_TOPIC_COURSE_ATTENDANCE);
+                Console.WriteLine("Using destination: " + destinationCourse);
+
+                // Create a consumer
+                using (IMessageConsumer consumer = session.CreateConsumer(destinationCourse))
+                {
+                    connection.Start();
+
+                    /*
+                     Console.WriteLine();
+                     Debug.WriteLine();
+                     */
+
+                    while (true)
+                    {
+                        ITextMessage message = consumer.Receive() as ITextMessage;
+                        if (message == null)
+                        {
+                            Debug.WriteLine("No message received!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Message Received!!: " + message);
+                            Debug.WriteLine("Message Received!!: " + message);
+
+                            // TODO: Interpert message and send to php WS
+                        }
+                    }
+                }
+            }
+        }
 
         public void start()
         {
-            using (IConnection connection = factory.CreateConnection())
+            using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
             using (ISession session = connection.CreateSession())
             {
                 destination = SessionUtil.GetDestination(session, PATH_QUEUE);
@@ -60,36 +117,6 @@
                             string jsonResult = wSConsumer.getTeacherEntityJsonBy(teacherID);
                             Console.WriteLine("Json Result  : \n" + jsonResult);
 
-                            /*teacherEntityView teacherEntity = wSConsumer.getTeacherEntityBy(teacherID);
-                            //teacherEntityView teacherEntity = new teacherEntityView();
-                            Console.WriteLine("Teacher entity view model to string");
-                            Console.WriteLine(teacherEntity.ToString());
-
-                            try {
-                                JObject jWS = JObject.FromObject(teacherEntity);
-                                Console.WriteLine("JObject jWS Log");
-                                Console.WriteLine(jWS.ToString());
-
-                                //NMSProducer producer = new NMSProducer();
-                                //producer.start(jWS, session, connection);
-                            } catch (JsonReaderException eJR)
-                            {
-                                Console.WriteLine("JObject error");
-                                Console.WriteLine(eJR.ToString());
-                            }*/
-                            /*
-                            using (IMessageProducer producer = session.CreateProducer()) {
-                                try
-                                {
-                                    connection.Start();
-                                    producer.DeliveryMode = MsgDeliveryMode.Persistent;
-                                    ITextMessage response = producer.CreateTextMessage(jsonResult);
-                                    producer.Send(response);
-                                } catch (NotSupportedException eNS)
-                                {
-                                    Console.WriteLine("Producer Bug: \n" + eNS.ToString());
-                                }
-                            }*/
                             NMSProducer producerOwn = new NMSProducer();
                             producerOwn.start(jsonResult);
                         }
