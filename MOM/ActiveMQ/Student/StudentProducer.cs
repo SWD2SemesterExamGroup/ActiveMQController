@@ -12,7 +12,7 @@
     public class StudentProducer : Configuration
     {
         private IDestination Destination;
-        private const String PATH_QUEUE = "queue://student-key";
+        private const String PATH_QUEUE = "queue://student-key-response";
 
         public void ResponseToKeyAttendance(String message)
         {
@@ -36,7 +36,7 @@
                     Debug.WriteLine(request.Text);
 
                     producer.Send(request.Text);
-                    Console.WriteLine("Message Send to ActiveMQ Queue");
+                    Console.WriteLine("Send to ActiveMQ Queue\n" + Destination);
                 }
             }
         }

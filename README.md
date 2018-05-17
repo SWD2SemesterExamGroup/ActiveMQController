@@ -1,6 +1,12 @@
 ﻿# MOM ActiveMQ controller
 A c# MOM/API Gateway application
 
+# Repository Package Include
+* Source code
+* Packages
+	* ActiveMQ.NMS
+	* Newtonsoft.Json
+
 # Installation
 1. Update package list Tools -> NuGet Package Manager
 2. Set settings
@@ -12,5 +18,5 @@ Make sure you have an ActiveMQ server running locally.
 * Destination is set in Consumers and Producers
 
 # Version
-1.0.3
+1.0.6
 
