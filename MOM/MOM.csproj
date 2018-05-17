@@ -56,7 +56,10 @@
     <Compile Include="ActiveMQ\Configuration.cs" />
     <Compile Include="ActiveMQ\NMSConsumer.cs" />
     <Compile Include="ActiveMQ\NMSProducer.cs" />
+    <Compile Include="ActiveMQ\Student\StudentConsumer.cs" />
+    <Compile Include="ActiveMQ\Student\StudentProducer.cs" />
     <Compile Include="ActiveMQ\Teacher\WSConsumer.cs" />
+    <Compile Include="Helpers\ContentFilters\PHPWSFilter.cs" />
     <Compile Include="Models\Teacher\ClassModel.cs" />
     <Compile Include="Models\Teacher\CourseModel.cs" />
     <Compile Include="Models\Teacher\TeacherModel.cs" />
@@ -73,6 +76,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="WebServiceControllers\AttendanceLogWS.cs" />
+    <Compile Include="WebServiceControllers\CourseAccessWS.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

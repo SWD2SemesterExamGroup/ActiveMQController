@@ -1,15 +1,11 @@
-﻿using System;
-using Apache.NMS;
-using Apache.NMS.Util;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using MOM.KEA_Organization;
-using System.Web.Services.Protocols;
-using MOM.ActiveMQ;
-using MOM.SandBox;
-
-namespace MOM
+﻿namespace MOM
 {
+    using MOM.ActiveMQ;
+    using MOM.Helpers.ContentFilters;
+    using MOM.WebServiceControllers;
+    using System;
+    using System.Diagnostics;
+
     class Program
     {
         /**
@@ -18,6 +14,15 @@ namespace MOM
          */
         public static void Main(string[] args)
         {
+
+
+            /* Test for filter of message text */
+            //PHPWSFilter phpFilter = new PHPWSFilter();
+            //phpFilter.filterToWS();
+            /* Test of Course Access WS */
+            //CourseAccessWS caws = new CourseAccessWS();
+            //var item = caws.insertKey(phpFilter.filterToWS(""));
+            //Debug.WriteLine("Response item: " + item);
             /* Test call to PHP REST API */
             //CoursePasswordTasks test1 = new CoursePasswordTasks();
             //test1.callWSGet().Wait();
