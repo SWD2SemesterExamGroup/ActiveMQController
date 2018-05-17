@@ -16,7 +16,8 @@
         private const String BASE_PORT = ":9090";
         private const String BASE_DIRECTION = "/CourseAccessAPI/src";
         private const String BASE_FILE = "/api.php";
-        private const String BASE_POST = "/post";
+        private String BASE_POST = "/post";
+        private const String BASE_KEY_CHECK = "/keycheck";
         private String destination;
 
         // https://msdn.microsoft.com/en-us/library/900ted1f(v=vs.110).aspx
@@ -59,6 +60,17 @@
             }
             Debug.WriteLine("All responses: " + responseValues);
             return responseValues;
+        }
+
+        public JObject checkKey(String key)
+        {
+            destination = BASE_PATH + BASE_PORT + BASE_DIRECTION + BASE_FILE + BASE_KEY_CHECK + "/" + key;
+            WebClient client = new WebClient();
+            NameValueCollection nvCollection = new NameValueCollection();
+
+            byte[] response = client.UploadValues(destination, "POST", nvCollection);
+
+            return JObject.Parse(Encoding.ASCII.GetString(response));
         }
     }
 }
