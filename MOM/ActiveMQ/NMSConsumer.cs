@@ -2,13 +2,14 @@
 {
     using Apache.NMS;
     using Apache.NMS.Util;
-    using MOM.KEA_Organization;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Diagnostics;
     using MOM.ActiveMQ.Teacher;
-    using Newtonsoft.Json;
     using System.Threading;
+    using MOM.ActiveMQ.Student;
+    using MOM.Helpers.ContentFilters;
+    using MOM.WebServiceControllers;
 
     // Could become TeacherConsumer
     public class NMSConsumer : Configuration
@@ -20,12 +21,14 @@
         
         public void startReceivers()
         {
-            Thread teacherThread1 = new Thread(new ThreadStart(new NMSConsumer().start));
-            Thread teacherThread2 = new Thread(new ThreadStart(new NMSConsumer().courseAttendance));
-            //courseAttendance();
-
+            StudentConsumer studentConsumer = new StudentConsumer();
+            Thread teacherThread1 = new Thread(new ThreadStart(start));
+            Thread teacherThread2 = new Thread(new ThreadStart(keyCourse));
+            Thread teacherThread3 = new Thread(new ThreadStart(studentConsumer.studentKey));
+            
             teacherThread1.Start();
             teacherThread2.Start();
+            teacherThread3.Start();
 
             Console.WriteLine("--------------------------------");
             Console.WriteLine("-------------MOM----------------");
@@ -35,7 +38,7 @@
 
         }
 
-        public void courseAttendance()
+        private void keyCourse()
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
             using (ISession session = connection.CreateSession())
@@ -62,10 +65,21 @@
                         }
                         else
                         {
-                            Console.WriteLine("Message Received!!: " + message);
-                            Debug.WriteLine("Message Received!!: " + message);
+                            Console.WriteLine("Message Received!!: " + message.Text);
+                            Debug.WriteLine("Message Received!!: \n" + message.Text);
 
-                            // TODO: Interpert message and send to php WS
+                            // Php Service Call to insert newly generated passwords
+                            // TODO: Interpert message, do content filtering and send to php WS
+                            JObject teacherPHP = new PHPWSFilter().filterToWS(message.Text);
+
+                            CourseAccessWS caws = new CourseAccessWS();
+
+                            var item = caws.insertKey(teacherPHP);
+
+                            Debug.WriteLine(item);
+
+                            NMSProducer producer = new NMSProducer();
+                            producer.keyResponse(item);
                         }
                     }
                 }
