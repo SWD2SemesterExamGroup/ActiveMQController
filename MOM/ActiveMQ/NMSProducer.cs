@@ -2,7 +2,6 @@
 {
     using Apache.NMS;
     using Apache.NMS.Util;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Diagnostics;
 
@@ -12,9 +11,14 @@
     /// <seealso cref="MOM.ActiveMQ.Configuration" />
     public class NMSProducer : Configuration
     {
+        // Variables
         private IDestination destination, destinationKeySuccess;
         private const String PATH_QUEUE = "queue://jsa-queue", PATH_KEY_SUCCESS = "queue://course-key-response";
-        
+
+        /// <summary>
+        /// Starts the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
         public void start(string text)
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
@@ -42,6 +46,10 @@
             }
         }
 
+        /// <summary>
+        /// Produce response to Keys insert from Teacher Client
+        /// </summary>
+        /// <param name="text">The text.</param>
         public void keyResponse(string text)
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))

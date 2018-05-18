@@ -6,13 +6,27 @@ namespace MOM.ActiveMQ.Teacher
     using System;
     using System.Web.Services.Protocols;
 
+    /// <summary>
+    /// Connection and functionality class for the KEA Organization Web Service
+    /// </summary>
     public class WSConsumer
     {
+        /// <summary>
+        /// Field for
+        /// </summary>
         private Teachersws ws_kea = new Teachersws();
 
+        /// <summary>
+        /// Gets the teacher entity by.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// Object TeacherEntityView
+        /// </returns>
         public teacherEntityView getTeacherEntityBy(int id)
         {
             teacherEntityView teacherEntity = new teacherEntityView();
+
             try
             {
                 teacherEntity = ws_kea.CourseClassesDataBy(id);
@@ -26,8 +40,14 @@ namespace MOM.ActiveMQ.Teacher
             Console.WriteLine("Teacher WS data");
             Console.WriteLine(teacherEntity.ToString());
 
+            // return id or 0
             return teacherEntity;
         }
+        /// <summary>
+        /// Gets the teacher entity json by.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>String</returns>
         public String getTeacherEntityJsonBy(int id)
         {
             teacherEntityView teacherEntity = new teacherEntityView();
@@ -42,23 +62,16 @@ namespace MOM.ActiveMQ.Teacher
             }
 
             Console.WriteLine("Teacher WS data");
-            Console.WriteLine(teacherEntity.ToString());
+            //Console.WriteLine(teacherEntity.ToString());
 
             Console.WriteLine("Teacher WS data To Json");
 
+            // Serialize response
             string result = JsonConvert.SerializeObject(teacherEntity);
             Console.WriteLine("Done converting teacher Json");
             //Console.WriteLine(result);
-
-            // DIDN'T WORK
-            /*XmlDocument teacherDoc = new XmlDocument();
-            teacherDoc.LoadXml(teacherEntity.ToString());
-            string result = JsonConvert.SerializeObject(teacherDoc);
-            Console.WriteLine("Done converting teacher Json");
-            Console.WriteLine(result);*/
-
+            
             return result;
         }
-
     }
 }

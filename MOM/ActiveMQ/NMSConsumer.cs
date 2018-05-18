@@ -12,13 +12,21 @@
     using MOM.WebServiceControllers;
 
     // Could become TeacherConsumer
+    /// <summary>
+    /// NMS Consumer also know as the teacher consumer
+    /// </summary>
+    /// <seealso cref="MOM.ActiveMQ.Configuration" />
     public class NMSConsumer : Configuration
     {
+        // Variables
         private IDestination destination;
         private const String PATH_QUEUE = "queue://jsa-queue";
         private IDestination destinationCourse;
         private const String PATH_TOPIC_COURSE_ATTENDANCE = "queue://course-keys";
-        
+
+        /// <summary>
+        /// Starts the receivers.
+        /// </summary>
         public void startReceivers()
         {
             StudentConsumer studentConsumer = new StudentConsumer();
@@ -38,6 +46,9 @@
 
         }
 
+        /// <summary>
+        /// Keys the course.
+        /// </summary>
         private void keyCourse()
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
@@ -86,11 +97,15 @@
             }
         }
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
         public void start()
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
             using (ISession session = connection.CreateSession())
             {
+                // Instantiation of destination
                 destination = SessionUtil.GetDestination(session, PATH_QUEUE);
                 Console.WriteLine("Using destination: " + destination);
 
@@ -101,6 +116,7 @@
                     // Start the connection so that messages will be processed.
                     while (true)
                     { 
+                        // Set up receiver for destination queue
                         ITextMessage message = consumer.Receive() as ITextMessage;
 
                         if (message == null)
@@ -109,14 +125,16 @@
                         }
                         else
                         {
+                            /*
                             Console.WriteLine("Received message with ID:   " + message.NMSMessageId);
                             Console.WriteLine("Received message with Correlation ID:   " + message.NMSCorrelationID);
                             Console.WriteLine("Received message with Type:   " + message.NMSType);
                             Console.WriteLine("Received message with text: " + message.Text);
-
+                            */
                             // parse Json to object
                             JObject jObject = JObject.Parse(message.Text);
 
+                            // Add teacher id
                             int teacherID = int.Parse(jObject["teacherID"].ToString());
 
                             Console.WriteLine("From Json to Object");
@@ -127,11 +145,14 @@
 
                             // Initialize Teacher WS
                             WSConsumer wSConsumer = new WSConsumer();
-                            Console.WriteLine("Teacher as json string");
+                            //Console.WriteLine("Teacher as json string");
+                            // get teacher data from KEA Organization web service
                             string jsonResult = wSConsumer.getTeacherEntityJsonBy(teacherID);
-                            Console.WriteLine("Json Result  : \n" + jsonResult);
+                            //Console.WriteLine("Json Result  : \n" + jsonResult);
 
+                            // Instantiatet Producer
                             NMSProducer producerOwn = new NMSProducer();
+                            // produce result to teacher client
                             producerOwn.start(jsonResult);
                         }
                     }

@@ -7,12 +7,19 @@
     using System;
     using System.Diagnostics;
 
+    /// <summary>
+    /// The Student Consumer of the Amazon Web Service ActiveMQ
+    /// </summary>
+    /// <seealso cref="MOM.ActiveMQ.Configuration" />
     public class StudentConsumer : Configuration
     {
+        // Variables
         private IDestination studentDestiantion;
         private const String PATH_KEY_STUDENT = "queue://student-key";
 
-        // Receiving messages from student trying out a key
+        /// <summary>
+        /// SReceiving messages from student trying out a key
+        /// </summary>
         public void studentKey()
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
@@ -25,11 +32,6 @@
                 using (IMessageConsumer consumer = session.CreateConsumer(studentDestiantion))
                 {
                     connection.Start();
-
-                    /*
-                     Console.WriteLine();
-                     Debug.WriteLine();
-                     */
 
                     while (true)
                     {
@@ -57,16 +59,13 @@
                             json["success"] = success["success"];
                             
                             var responseLog = attendanceLogWS.addToAttendanceLog(json);
-
+                            // Instantiate Producer
                             StudentProducer producer = new StudentProducer();
+                            // Instantiate response object
                             JObject response = new JObject();
-                            response.Add("success", (String)json["success"]);
+                            response.Add("success", (String)json["success"]); // Add value
+                            // Produce and send Object
                             producer.ResponseToKeyAttendance(response.ToString());
-                            /*
-                             * try key at php ws get all ids and a success message response
-                             * call attendance log WS to post data
-                             * Return success response to student client queue student-key
-                             */
                         }
                     }
                 }

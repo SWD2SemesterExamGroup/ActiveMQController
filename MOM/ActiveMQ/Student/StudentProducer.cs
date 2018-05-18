@@ -11,9 +11,15 @@
     /// <seealso cref="MOM.ActiveMQ.Configuration" />
     public class StudentProducer : Configuration
     {
+        // Variables
         private IDestination Destination;
         private const String PATH_QUEUE = "queue://student-key-response";
 
+        // Methods
+        /// <summary>
+        /// Responses to key attendance.
+        /// </summary>
+        /// <param name="message">The message.</param>
         public void ResponseToKeyAttendance(String message)
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))

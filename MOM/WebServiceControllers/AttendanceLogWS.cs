@@ -1,12 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Net;
-using System.Text;
-
 namespace MOM.WebServiceControllers
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Net;
+    using System.Text;
+
+    /// <summary>
+    /// The connection to the Attendance Log Web Service
+    /// </summary>
     public class AttendanceLogWS
     {
         // Connection Variables
@@ -15,6 +18,11 @@ namespace MOM.WebServiceControllers
         private const String BASE_POST = "/insertcourseregistration";
         private String destination;
 
+        /// <summary>
+        /// Adds data to attendance log ws
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>String response</returns>
         public string addToAttendanceLog(JObject data)
         {
             destination = BASE_PATH + BASE_PORT + BASE_POST;
