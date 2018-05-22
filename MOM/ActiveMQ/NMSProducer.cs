@@ -37,7 +37,7 @@
 
                     ITextMessage request = session.CreateTextMessage(text);
 
-                    Console.WriteLine(request.Text);
+                    //Console.WriteLine(request.Text);
                     Debug.WriteLine(request.Text);
 
                     producer.Send(request.Text);
@@ -68,7 +68,7 @@
 
                     ITextMessage request = session.CreateTextMessage(text);
 
-                    Console.WriteLine(request.Text);
+                    //Console.WriteLine(request.Text);
                     Debug.WriteLine(request.Text);
 
                     producer.Send(request.Text);

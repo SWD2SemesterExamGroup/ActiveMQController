@@ -4,6 +4,7 @@ namespace MOM.ActiveMQ.Teacher
 {
     using Newtonsoft.Json;
     using System;
+    using System.Diagnostics;
     using System.Web.Services.Protocols;
 
     /// <summary>
@@ -34,11 +35,11 @@ namespace MOM.ActiveMQ.Teacher
             }
             catch (SoapHeaderException eSoap)
             {
-                Console.WriteLine(eSoap.ToString());
+                Debug.WriteLine(eSoap.ToString());
             }
 
-            Console.WriteLine("Teacher WS data");
-            Console.WriteLine(teacherEntity.ToString());
+            //Console.WriteLine("Teacher WS data");
+            //Console.WriteLine(teacherEntity.ToString());
 
             // return id or 0
             return teacherEntity;
@@ -61,10 +62,10 @@ namespace MOM.ActiveMQ.Teacher
                 Console.WriteLine(eSoap.ToString());
             }
 
-            Console.WriteLine("Teacher WS data");
+            //Console.WriteLine("Teacher WS data");
             //Console.WriteLine(teacherEntity.ToString());
 
-            Console.WriteLine("Teacher WS data To Json");
+            //Console.WriteLine("Teacher WS data To Json");
 
             // Serialize response
             string result = JsonConvert.SerializeObject(teacherEntity);

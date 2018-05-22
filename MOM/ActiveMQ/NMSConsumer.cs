@@ -6,8 +6,6 @@
     using System;
     using System.Diagnostics;
     using MOM.ActiveMQ.Teacher;
-    using System.Threading;
-    using MOM.ActiveMQ.Student;
     using MOM.Helpers.ContentFilters;
     using MOM.WebServiceControllers;
 
@@ -25,31 +23,9 @@
         private const String PATH_TOPIC_COURSE_ATTENDANCE = "queue://course-keys";
 
         /// <summary>
-        /// Starts the receivers.
-        /// </summary>
-        public void startReceivers()
-        {
-            StudentConsumer studentConsumer = new StudentConsumer();
-            Thread teacherThread1 = new Thread(new ThreadStart(start));
-            Thread teacherThread2 = new Thread(new ThreadStart(keyCourse));
-            Thread teacherThread3 = new Thread(new ThreadStart(studentConsumer.studentKey));
-            
-            teacherThread1.Start();
-            teacherThread2.Start();
-            teacherThread3.Start();
-
-            Console.WriteLine("--------------------------------");
-            Console.WriteLine("-------------MOM----------------");
-            Console.WriteLine("  Mom's Friendly Robot Company  ");
-            Console.WriteLine("-------------MOM----------------");
-            Console.WriteLine("--------------------------------");
-
-        }
-
-        /// <summary>
         /// Keys the course.
         /// </summary>
-        private void keyCourse()
+        public void keyCourse()
         {
             using (IConnection connection = factory.CreateConnection(USER, PASSWORD))
             using (ISession session = connection.CreateSession())
@@ -137,22 +113,22 @@
                             // Add teacher id
                             int teacherID = int.Parse(jObject["teacherID"].ToString());
 
-                            Console.WriteLine("From Json to Object");
-                            Console.WriteLine("ID: " + teacherID);
+                            //Console.WriteLine("From Json to Object");
+                            //Console.WriteLine("ID: " + teacherID);
 
                             // Using ws to retreive data from WS
                             Console.WriteLine("Calling KEA Organization WS");
 
                             // Initialize Teacher WS
                             WSConsumer wSConsumer = new WSConsumer();
-                            //Console.WriteLine("Teacher as json string");
+                            
                             // get teacher data from KEA Organization web service
                             string jsonResult = wSConsumer.getTeacherEntityJsonBy(teacherID);
                             //Console.WriteLine("Json Result  : \n" + jsonResult);
 
                             // Instantiatet Producer
                             NMSProducer producerOwn = new NMSProducer();
-                            // produce result to teacher client
+                            // produce result to teacher client through ActiveMQ
                             producerOwn.start(jsonResult);
                         }
                     }

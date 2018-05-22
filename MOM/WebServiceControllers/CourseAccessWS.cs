@@ -1,17 +1,19 @@
 ﻿namespace MOM.WebServiceControllers
 {
+    using MOM.SandBox.HealthCheckAPI;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.IO;
     using System.Net;
     using System.Text;
 
     /// <summary>
     /// Connection and functionality of tje Course Access Web Service
     /// </summary>
-    public class CourseAccessWS
+    public class CourseAccessWS : AHealthCheck
     {
         // Variables
         private const String BASE_PATH = "http://localhost";
@@ -19,8 +21,13 @@
         private const String BASE_DIRECTION = "/CourseAccessAPI/src";
         private const String BASE_FILE = "/api.php";
         private String BASE_POST = "/post";
+        private String BASE_HEALTH = "/health";
         private const String BASE_KEY_CHECK = "/keycheck";
         private String destination;
+
+        public CourseAccessWS() : base("CourseAccessWS")
+        {
+        }
 
         /// <summary>
         /// Inserts the key.
@@ -99,6 +106,26 @@
 
             // Return object
             return JObject.Parse(Encoding.ASCII.GetString(response));
+        }
+
+        public override string CheckHealth()
+        {
+            destination = BASE_PATH + BASE_PORT + BASE_DIRECTION + BASE_FILE + BASE_HEALTH;
+            WebClient client = new WebClient();
+            Debug.WriteLine("Destination: " + destination);
+            String response = "";
+            try
+            {
+                // Creating stream to endpoint
+                Stream stream = client.OpenRead(destination);
+                StreamReader reader = new StreamReader(stream);
+                response = reader.ReadToEnd();
+            } catch (WebException eW)
+            {
+                response = "{'success':false}";
+            }
+            Debug.WriteLine("Stream Response: " + response);
+            return response;
         }
     }
 }

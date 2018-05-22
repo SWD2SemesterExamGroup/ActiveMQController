@@ -18,7 +18,7 @@
         private const String PATH_KEY_STUDENT = "queue://student-key";
 
         /// <summary>
-        /// SReceiving messages from student trying out a key
+        /// Receiving messages from student trying out a key
         /// </summary>
         public void studentKey()
         {
@@ -46,21 +46,20 @@
                             Debug.WriteLine("Message Received!!: \n" + message.Text);
                             // Add message ass json
                             JObject json = JObject.Parse(message.Text);
-
-                            // New instance of Course Access Web Service
+                            
+                            // Instantiate Producer
+                            StudentProducer producer = new StudentProducer();
+                            
+                            // Instatiate Services
+                            AttendanceLogWS attendanceLogWS = new AttendanceLogWS();
                             CourseAccessWS courseAccessWS = new CourseAccessWS();
                             // Send key for check and getting response
                             JObject success = courseAccessWS.checkKey((String)json["key"]);
-
-                            // Instatiate Service
-                            AttendanceLogWS attendanceLogWS = new AttendanceLogWS();
+                            
                             // Modify json object to have one more field courseID
                             json["courseid"] = success["CourseID"];
                             json["success"] = success["success"];
-                            
                             var responseLog = attendanceLogWS.addToAttendanceLog(json);
-                            // Instantiate Producer
-                            StudentProducer producer = new StudentProducer();
                             // Instantiate response object
                             JObject response = new JObject();
                             response.Add("success", (String)json["success"]); // Add value

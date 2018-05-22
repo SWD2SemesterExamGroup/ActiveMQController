@@ -71,6 +71,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="SandBox\CoursePasswordTasks.cs" />
+    <Compile Include="HealthCheckAPI\AHealthCheck.cs" />
+    <Compile Include="HealthCheckAPI\APIServiceContainer.cs" />
+    <Compile Include="HealthCheckAPI\DailyTrigger.cs" />
+    <Compile Include="HealthCheckAPI\HealthCheckController.cs" />
+    <Compile Include="HealthCheckAPI\IHealthCheck.cs" />
+    <Compile Include="SandBox\TestObjects\TestService.cs" />
+    <Compile Include="StartUpServices\ProgramInitiater.cs" />
     <Compile Include="Web References\KEA_Organization\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,6 +85,7 @@
     </Compile>
     <Compile Include="WebServiceControllers\AttendanceLogWS.cs" />
     <Compile Include="WebServiceControllers\CourseAccessWS.cs" />
+    <Compile Include="WebServiceControllers\GodkodeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -2,10 +2,14 @@
 {
     using MOM.ActiveMQ;
     using MOM.Helpers.ContentFilters;
+    using MOM.SandBox.HealthCheckAPI;
+    using MOM.SandBox.HealthCheckAPI.TestObjects;
+    using MOM.StartUpServices;
     using MOM.WebServiceControllers;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Diagnostics;
+    using System.Threading;
 
     class Program
     {
@@ -53,9 +57,13 @@
             /* Test call to PHP REST API */
             //CoursePasswordTasks test1 = new CoursePasswordTasks();
             //test1.callWSGet().Wait();
+
+            /* Health Check API Test */
+            //HealthCheckController healthCheck = new HealthCheckController();
+
             /* Setup Consumers to AWS MQ */
-            NMSConsumer teacherRoute = new NMSConsumer();
-            teacherRoute.startReceivers();
+            ProgramInitiater initiater = new ProgramInitiater();
+            initiater.StartServices();
         }
     }
 }
