@@ -25,6 +25,7 @@
         }
         // Check services on start up
         public void checkServices() { checkServices(new object()); }
+
         /// <summary>
         /// Checks the services.
         /// </summary>
@@ -44,10 +45,15 @@
 
                 if (service.IsRunning)
                 {
-                    msgConsole += service.ServiceName + "\t\t||\t\t" + service.IsRunning + "\t||\t" + service.LastCheck + "\n";
-                } else
+                    msgConsole += service.ServiceName + "\t\t||\t\t" + 
+                                  service.IsRunning + "\t||\t" + 
+                                  service.LastCheck + "\n";
+                }
+                else
                 {
-                    msgConsole += service.ServiceName + "\t\t||\t\t" + service.IsRunning + "\t||\t" + service.LastCheck + "\n";
+                    msgConsole += service.ServiceName + "\t\t||\t\t" + 
+                                  service.IsRunning + "\t||\t" + 
+                                  service.LastCheck + "\n";
                 }
             }
 
