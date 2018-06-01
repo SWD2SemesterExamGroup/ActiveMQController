@@ -94,13 +94,13 @@
         /// <returns>JObject</returns>
         public JObject checkKey(String key)
         {
+            /* Add Timestamp to URI for key check */
             // Setup destination
             destination = BASE_PATH + BASE_PORT + BASE_DIRECTION + BASE_FILE + BASE_KEY_CHECK + "/" + key;
             // Client
             WebClient client = new WebClient();
             // Empty name value colltion
             NameValueCollection nvCollection = new NameValueCollection();
-
             // Respons
             byte[] response = client.UploadValues(destination, "POST", nvCollection);
 
