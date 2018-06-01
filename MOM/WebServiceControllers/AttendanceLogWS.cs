@@ -15,8 +15,8 @@ namespace MOM.WebServiceControllers
     public class AttendanceLogWS : AHealthCheck
     {
         // Connection Variables
-        private const String BASE_PATH = "http://localhost";
-        private const String BASE_PORT = ":8000";
+        private const String BASE_PATH = "https://attendanceapikea2018.herokuapp.com";
+        private const String BASE_PORT = "";
         private const String BASE_POST = "/insertcourseregistration";
         private const String BASE_HEALTH = "/health";
         private String destination;
